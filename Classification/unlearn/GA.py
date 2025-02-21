@@ -22,7 +22,7 @@ def GA(data_loaders, model, criterion, optimizer, epoch, args, mask=None):
     train_loader = data_loaders["forget"]
     losses = utils.AverageMeter()
     top1 = utils.AverageMeter()
-
+    print(optimizer) # Added this to check
     # switch to train mode
     model.train()
 
