@@ -572,18 +572,20 @@ def cifar10_dataloaders(
     train_set = CIFAR10(data_dir, train=True, transform=train_transform, download=True)
     test_set = CIFAR10(data_dir, train=False, transform=test_transform, download=True)
 
-    # Filter out class 4 from train and test
-    train_indices = [i for i in range(len(train_set)) if train_set.targets[i] != never_saw]
-    test_indices = [i for i in range(len(test_set)) if test_set.targets[i] != never_saw]
-    train_set = Subset(train_set, train_indices)
-    test_set = Subset(test_set, test_indices)
- 
-    # Print dataset sizes after filtering
-    print(f"Training set size: {len(train_set)}")
-    print(f"Test set size: {len(test_set)}")
 
-    train_set.targets = np.array(train_set.targets)
-    test_set.targets = np.array(test_set.targets)
+    # Create subsets based on the filtered indices
+    filtered_train_set = Subset(train_set, train_indices)
+    filtered_test_set = Subset(test_set, test_indices)
+
+    # Assign new targets to the subsets (for compatibility with other functions)
+    filtered_train_set.targets = train_targets[train_indices].tolist()
+    filtered_test_set.targets = test_targets[test_indices].tolist()
+
+    train_set.targets = np.array(filtered_train_set.targets)
+    test_set.targets = np.array(filtered_test_set.targets)
+
+    #train_set.targets = np.array(train_set.targets)
+    #test_set.targets = np.array(test_set.targets)
 
     rng = np.random.RandomState(seed)
     valid_set = copy.deepcopy(train_set)
