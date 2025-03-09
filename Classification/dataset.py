@@ -572,6 +572,13 @@ def cifar10_dataloaders(
     train_set = CIFAR10(data_dir, train=True, transform=train_transform, download=True)
     test_set = CIFAR10(data_dir, train=False, transform=test_transform, download=True)
 
+    # Convert targets to numpy array for easier indexing
+    train_targets = np.array(train_set.targets)
+    test_targets = np.array(test_set.targets)
+
+    # Get the indices of samples that are NOT class 4
+    train_indices = np.where(train_targets != never_saw)[0]
+    test_indices = np.where(test_targets != never_saw)[0]
 
     # Create subsets based on the filtered indices
     filtered_train_set = Subset(train_set, train_indices)
