@@ -566,9 +566,21 @@ def cifar10_dataloaders(
     print("10000 images for testing\t no normalize applied in data_transform")
     print("Data augmentation = randomcrop(32,4) + randomhorizontalflip")
 
-    train_set = CIFAR10(data_dir, train=True, transform=train_transform, download=True)
+    never_saw = 4 
+    print(f"Not training on class {never_saw}")
 
+    train_set = CIFAR10(data_dir, train=True, transform=train_transform, download=True)
     test_set = CIFAR10(data_dir, train=False, transform=test_transform, download=True)
+
+    # Filter out class 4 from train and test
+    train_indices = [i for i in range(len(train_set)) if train_set.targets[i] != never_saw]
+    test_indices = [i for i in range(len(test_set)) if test_set.targets[i] != never_saw]
+    train_set = Subset(train_set, train_indices)
+    test_set = Subset(test_set, test_indices)
+ 
+    # Print dataset sizes after filtering
+    print(f"Training set size: {len(train_set)}")
+    print(f"Test set size: {len(test_set)}")
 
     train_set.targets = np.array(train_set.targets)
     test_set.targets = np.array(test_set.targets)

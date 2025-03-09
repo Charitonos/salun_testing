@@ -110,7 +110,7 @@ def dataset_convert_to_test(dataset, args=None):
 
 
 def setup_model_dataset(args):
-    if args.dataset == "cifar10":
+    if args.dataset == "cifar10": # This is the dataset I care about (pancha)
         classes = 10
         normalization = NormalizeByChannelMeanStd(
             mean=[0.4914, 0.4822, 0.4465], std=[0.2470, 0.2435, 0.2616]
@@ -143,7 +143,9 @@ def setup_model_dataset(args):
         setup_seed(args.train_seed)
 
         model.normalize = normalization
-        return model, train_full_loader, val_loader, test_loader, marked_loader
+
+        return model, train_full_loader, val_loader, test_loader, marked_loader # <------
+
     elif args.dataset == "svhn":
         classes = 10
         normalization = NormalizeByChannelMeanStd(
