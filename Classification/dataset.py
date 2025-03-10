@@ -572,22 +572,23 @@ def cifar10_dataloaders(
     train_set = CIFAR10(data_dir, train=True, transform=train_transform, download=True)
     test_set = CIFAR10(data_dir, train=False, transform=test_transform, download=True)
 
-    # Convert targets to numpy array for easier indexing
-    train_targets = np.array(train_set.targets)
-    test_targets = np.array(test_set.targets)
+    # remove from here ------ 
+    ## Convert targets to numpy array for easier indexing
+    #train_targets = np.array(train_set.targets)
+    #test_targets = np.array(test_set.targets)
 
-    # Get the indices of samples that are NOT class 4
-    train_indices = np.where(train_targets != never_saw)[0]
-    test_indices = np.where(test_targets != never_saw)[0]
+    ## Get the indices of samples that are NOT class 4
+    #train_indices = np.where(train_targets != never_saw)[0]
+    #test_indices = np.where(test_targets != never_saw)[0]
 
-    # Filter the dataset using the indices
-    train_set.data = train_set.data[train_indices]
-    train_set.targets = train_targets[train_indices].tolist()
+    ## Filter the dataset using the indices
+    #train_set.data = train_set.data[train_indices]
+    #train_set.targets = train_targets[train_indices].tolist()
 
-    test_set.data = test_set.data[test_indices]
-    test_set.targets = test_targets[test_indices].tolist()
+    #test_set.data = test_set.data[test_indices]
+    #test_set.targets = test_targets[test_indices].tolist()
+    # To here to not remove the never saw class ------
 
-    # Note i also need to filter the train_set.data
 
     train_set.targets = np.array(train_set.targets)
     test_set.targets = np.array(test_set.targets)
