@@ -589,8 +589,8 @@ def cifar10_dataloaders(
 
     # Note i also need to filter the train_set.data
 
-    #train_set.targets = np.array(train_set.targets)
-    #test_set.targets = np.array(test_set.targets)
+    train_set.targets = np.array(train_set.targets)
+    test_set.targets = np.array(test_set.targets)
 
     rng = np.random.RandomState(seed)
     valid_set = copy.deepcopy(train_set)
