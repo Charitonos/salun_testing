@@ -580,16 +580,14 @@ def cifar10_dataloaders(
     train_indices = np.where(train_targets != never_saw)[0]
     test_indices = np.where(test_targets != never_saw)[0]
 
-    # Create subsets based on the filtered indices
-    filtered_train_set = Subset(train_set, train_indices)
-    filtered_test_set = Subset(test_set, test_indices)
+    # Filter the dataset using the indices
+    train_set.data = train_set.data[train_indices]
+    train_set.targets = train_targets[train_indices].tolist()
 
-    # Assign new targets to the subsets (for compatibility with other functions)
-    filtered_train_set.targets = train_targets[train_indices].tolist()
-    filtered_test_set.targets = test_targets[test_indices].tolist()
+    test_set.data = test_set.data[test_indices]
+    test_set.targets = test_targets[test_indices].tolist()
 
-    train_set.targets = np.array(filtered_train_set.targets)
-    test_set.targets = np.array(filtered_test_set.targets)
+    # Note i also need to filter the train_set.data
 
     #train_set.targets = np.array(train_set.targets)
     #test_set.targets = np.array(test_set.targets)
